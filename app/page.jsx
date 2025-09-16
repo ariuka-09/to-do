@@ -21,6 +21,7 @@ export default function Home() {
     list.map((el) => {
       if (el.id == id) {
         setChecked(!checked);
+        // el.checked = !el.checked; yg iim uildel hiimeer baigaa. useState eer yaj hiihee mdhgu bga
       }
     });
   };
@@ -45,6 +46,7 @@ export default function Home() {
             <ListElement
               key={index}
               element={el}
+              id={el.id}
               handleDelete={handleDelete}
               completed={completed}
               checked={checked}
