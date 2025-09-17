@@ -6,7 +6,12 @@ export function ListElement(props) {
       <div className="w-full h-[30px] bg-white flex gap-3 items-center px-4">
         <div className="flex w-full justify-between">
           <div className="flex gap-4">
-            <input type="checkbox" onClick={() => completed(element.id)} />
+            <input
+              defaultChecked={element.checked}
+              type="checkbox"
+              key={element.id}
+              onClick={() => completed(element.id)}
+            />
             <p className={element.checked ? "text-[red]" : "text-[black] "}>
               {element.text}
             </p>
