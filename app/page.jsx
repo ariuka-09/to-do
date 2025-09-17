@@ -3,13 +3,13 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { ListElement } from "@/components/ListElement";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 
 export default function Home() {
   const [list, setList] = useState([]);
-  const [checked, setChecked] = useState(false);
   const addElement = (text) => {
-    setList([...list, { text: text, id: Math.random(), checked: checked }]);
+    setList([...list, { text: text, id: uuidv4(), checked: false }]);
   };
   console.log(list);
   const handleDelete = (id) => {
@@ -18,12 +18,12 @@ export default function Home() {
     console.log(id);
   };
   const completed = (id) => {
-    list.map((el) => {
-      if (el.id == id) {
-        setChecked(!checked);
-        // el.checked = !el.checked; yg iim uildel hiimeer baigaa. useState eer yaj hiihee mdhgu bga
-      }
+    const newList = list.map((el) => {
+      if (el.id === id) el.checked = !el.checked;
+      return el;
     });
+    setList(newList);
+    console.log(newList, "list");
   };
 
   return (
@@ -41,15 +41,13 @@ export default function Home() {
           <Button text="Completed" color="bg-[#F3F4F6]"></Button>
         </div>
 
-        {list.map((el, index) => {
+        {list.map((el) => {
           return (
             <ListElement
-              key={index}
+              key={el.id}
               element={el}
-              id={el.id}
               handleDelete={handleDelete}
               completed={completed}
-              checked={checked}
             ></ListElement>
           );
         })}
