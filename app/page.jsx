@@ -10,10 +10,13 @@ export default function Home() {
   const [list, setList] = useState([]);
   const [fullArray, setFullArray] = useState([]);
   const [filterType, setFilterType] = useState("All");
+
   const addElement = (text) => {
-    const unique = uuidv4();
-    const uniquefr = unique;
-    setList([...list, { text: text, id: uniquefr, checked: false }]);
+    if (text !== "") {
+      const unique = uuidv4();
+      const uniquefr = unique;
+      setList([...list, { text: text, id: uniquefr, checked: false }]);
+    }
   };
 
   const handleDelete = (id) => {
@@ -38,7 +41,7 @@ export default function Home() {
   const showCompleted = () => {
     setFilterType("Completed");
   };
-  const filterredList = list.filter((el) => {
+  let filterredList = list.filter((el) => {
     if (filterType == "All") {
       return true;
     } else if (filterType == "Active") {
@@ -53,6 +56,13 @@ export default function Home() {
       number++;
     }
   });
+  const deleteCompleted = () => {
+    const completedArray = list.filter((el) => {
+      return el.checked == false;
+    });
+    console.log(completedArray);
+    setList(completedArray);
+  };
   return (
     <div className="flex justify-center items-center w-full ">
       <div className="px-4 py-6 w-fit h-fit flex flex-col gap-4 border-2 shadow">
@@ -65,18 +75,20 @@ export default function Home() {
         <div className="flex gap-2">
           <Button
             text="All"
-            color="bg-[#3C82F6]"
             givenFunction={showAll}
+            filterType={filterType}
           ></Button>
           <Button
             text="Active"
             color="bg-[#F3F4F6]"
             givenFunction={showActive}
+            filterType={filterType}
           ></Button>
           <Button
             text="Completed"
             color="bg-[#F3F4F6]"
             givenFunction={showCompleted}
+            filterType={filterType}
           ></Button>
         </div>
 
@@ -90,10 +102,21 @@ export default function Home() {
             ></ListElement>
           );
         })}
+
         <div className="bg-blue-50 h-10 w-full flex gap-4">
           <p>Total tasks: {list.length}</p>
-
           <p>Completed: {number}</p>
+          {filterType == "Completed" ? (
+            <div>
+              <Button
+                givenFunction={deleteCompleted}
+                text="delete completed"
+                className=" "
+              >
+                delete all
+              </Button>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
